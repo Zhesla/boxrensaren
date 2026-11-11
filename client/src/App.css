@@ -1,0 +1,200 @@
+:root {
+  --bg: #f4f1ea;
+  --panel: #fffdf8;
+  --ink: #1d1b18;
+  --muted: #6b665e;
+  --line: #e2dccf;
+  --accent: #d9452b;
+  --accent-ink: #ffffff;
+  --chip-on: #1d1b18;
+  --chip-on-ink: #fffdf8;
+  --warn-bg: #fff3d6;
+  --warn-ink: #6b4a00;
+  --code-bg: #1d1b18;
+  --code-ink: #f6e7a1;
+  --radius: 12px;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #151412;
+    --panel: #1f1d1a;
+    --ink: #f1ece2;
+    --muted: #a39d92;
+    --line: #34312c;
+    --chip-on: #f1ece2;
+    --chip-on-ink: #151412;
+    --warn-bg: #3a2f12;
+    --warn-ink: #f3d68a;
+    --code-bg: #0d0c0b;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 32px 16px 48px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 3rem);
+  letter-spacing: -0.03em;
+}
+
+.tagline {
+  margin: 4px 0 24px;
+  color: var(--muted);
+  max-width: 60ch;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* På mobilen (där man faktiskt spelar) hamnar söksträngen överst */
+.sticky { order: -1; }
+
+@media (min-width: 820px) {
+  .layout { grid-template-columns: 1.2fr 1fr; align-items: start; }
+  .sticky { order: 0; position: sticky; top: 16px; }
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.form { display: grid; gap: 4px; }
+
+.field {
+  border: 0;
+  margin: 0 0 16px;
+  padding: 0;
+  min-width: 0;
+}
+
+.label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 0 0 8px;
+  padding: 0;
+}
+
+.hint { color: var(--muted); font-size: 0.9rem; margin: 8px 0 0; }
+
+.row { display: flex; gap: 8px; margin-bottom: 8px; }
+.row > select, .row > input { flex: 1; min-width: 0; }
+
+input[type='text'], input[type='number'], select {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+input:focus-visible, select:focus-visible, .btn:focus-visible, .chip:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.chip input { position: absolute; opacity: 0; pointer-events: none; }
+.chip.on { background: var(--chip-on); color: var(--chip-on-ink); border-color: var(--chip-on); }
+
+.check { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; cursor: pointer; }
+
+.btn {
+  font: inherit;
+  font-weight: 600;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.danger { color: var(--accent); border-color: var(--accent); }
+.btn.wide { width: 100%; margin-top: 12px; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+.status { color: var(--muted); font-size: 0.9rem; }
+
+.search-string {
+  display: block;
+  background: var(--code-bg);
+  color: var(--code-ink);
+  padding: 16px;
+  border-radius: 8px;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.95rem;
+  word-break: break-all;
+  min-height: 3.5em;
+}
+
+.warnings {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+  display: grid;
+  gap: 8px;
+}
+
+.warnings li {
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.howto { margin-top: 16px; }
+.howto summary { cursor: pointer; font-weight: 600; }
+.howto ol { padding-left: 20px; margin: 8px 0; }
+
+.footer {
+  margin-top: 32px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  max-width: 70ch;
+}
