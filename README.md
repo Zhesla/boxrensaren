@@ -63,4 +63,3 @@ npm run build   # bygger till client/dist
 
 ## Vad jag lärt mig
 
-_(Fyll i löpande – det här är delen rekryterare faktiskt läser.)_
