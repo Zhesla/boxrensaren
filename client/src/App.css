@@ -1,17 +1,33 @@
+/*
+  Färgpalett
+  --teal:    #DBF2FC  bakgrund
+  --navy:    #072D50  text, valda chips, kodruta
+  --crimson: #FE5C8D  highlights (knappar, varningar, accenter)
+
+  OBS: vit text på crimson har för låg kontrast (ca 3:1, WCAG kräver 4.5:1),
+  så knappar i crimson har navy-text i stället (ca 4.7:1).
+*/
 :root {
-  --bg: #f4f1ea;
-  --panel: #fffdf8;
-  --ink: #1d1b18;
-  --muted: #6b665e;
-  --line: #e2dccf;
-  --accent: #d9452b;
-  --accent-ink: #ffffff;
-  --chip-on: #1d1b18;
-  --chip-on-ink: #fffdf8;
-  --warn-bg: #fff3d6;
-  --warn-ink: #6b4a00;
-  --code-bg: #1d1b18;
-  --code-ink: #f6e7a1;
+  --teal: #DBF2FC;
+  --navy: #072D50;
+  --crimson: #FE5C8D;
+
+  --bg: var(--teal);
+  --panel: #ffffff;
+  --ink: var(--navy);
+  --muted: #3d5f7d;
+  --line: #b4dcef;
+  --accent: var(--crimson);
+  --accent-ink: var(--navy);
+  --focus: var(--navy);
+  --chip-on: var(--navy);
+  --chip-on-ink: #ffffff;
+  --warn-bg: #ffe4ec;
+  --warn-ink: var(--navy);
+  --warn-edge: var(--crimson);
+  --code-bg: var(--navy);
+  --code-ink: var(--teal);
+  --input-bg: #f3fbfe;
   --radius: 12px;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   color-scheme: light dark;
@@ -19,16 +35,18 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #151412;
-    --panel: #1f1d1a;
-    --ink: #f1ece2;
-    --muted: #a39d92;
-    --line: #34312c;
-    --chip-on: #f1ece2;
-    --chip-on-ink: #151412;
-    --warn-bg: #3a2f12;
-    --warn-ink: #f3d68a;
-    --code-bg: #0d0c0b;
+    --bg: var(--navy);
+    --panel: #0b3a63;
+    --ink: var(--teal);
+    --muted: #9cc3dc;
+    --line: #1d5583;
+    --focus: var(--crimson);
+    --chip-on: var(--teal);
+    --chip-on-ink: var(--navy);
+    --warn-bg: #2a2f55;
+    --warn-ink: var(--teal);
+    --code-bg: #041d34;
+    --input-bg: #072d50;
   }
 }
 
@@ -49,8 +67,19 @@ body {
 
 .header h1 {
   margin: 0;
+  color: var(--ink);
   font-size: clamp(2rem, 6vw, 3rem);
   letter-spacing: -0.03em;
+}
+
+.header h1::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 6px;
+  margin-top: 8px;
+  border-radius: 3px;
+  background: var(--accent);
 }
 
 .tagline {
@@ -109,14 +138,14 @@ input[type='text'], input[type='number'], select {
   width: 100%;
   font: inherit;
   color: var(--ink);
-  background: var(--bg);
+  background: var(--input-bg);
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 10px 12px;
 }
 
 input:focus-visible, select:focus-visible, .btn:focus-visible, .chip:focus-within {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -153,7 +182,8 @@ input:focus-visible, select:focus-visible, .btn:focus-visible, .chip:focus-withi
 }
 
 .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-.btn.danger { color: var(--accent); border-color: var(--accent); }
+.btn.primary:hover:not(:disabled) { filter: brightness(1.05); box-shadow: 0 2px 0 var(--navy); }
+.btn.danger { color: var(--ink); border-color: var(--accent); border-width: 2px; }
 .btn.wide { width: 100%; margin-top: 12px; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -185,6 +215,7 @@ input:focus-visible, select:focus-visible, .btn:focus-visible, .chip:focus-withi
   color: var(--warn-ink);
   padding: 10px 12px;
   border-radius: 8px;
+  border-left: 4px solid var(--warn-edge);
   font-size: 0.9rem;
 }
 

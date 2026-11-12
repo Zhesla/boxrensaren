@@ -6,6 +6,14 @@ Du ställer in dina regler (vilka stjärnnivåer som får åka, vad som alltid s
 
 **Live-demo:** _(lägg in länken när den är deployad)_
 
+## Skärmdumpar
+
+Appen följer enhetens inställning för ljust eller mörkt läge.
+
+| Light mode | Dark mode |
+|---|---|
+| ![Boxrensaren i light mode](docs/screenshots/light.png) | ![Boxrensaren i dark mode](docs/screenshots/dark.png) |
+
 ## Varför jag byggde den
 
 Mitt lager är alltid fullt. Jag har en egen regel vanliga under 3 stjärnor åker, men allt speciellt och allt jag taggat "Best" stannar, men att skriva söksträngen för hand varje gång är segt och lätt att göra fel på. Ett glömt `!legendary` och en raid-pass är bortkastat.
