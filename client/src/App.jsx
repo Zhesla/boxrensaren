@@ -5,6 +5,9 @@ import { getProfiles, saveProfile, deleteProfile } from './storage/profileStore.
 import ProfilePicker from './components/ProfilePicker.jsx'
 import RuleForm from './components/RuleForm.jsx'
 import SearchOutput from './components/SearchOutput.jsx'
+import { ChevronRight } from './components/Icons.jsx'
+
+const GITHUB_URL = 'https://github.com/Zhesla/boxrensaren'
 
 export default function App() {
   const [ownProfiles, setOwnProfiles] = useState([])
@@ -48,15 +51,37 @@ export default function App() {
 
   return (
     <div className="page">
-      <header className="header">
-        <h1>Boxrensaren</h1>
-        <p className="tagline">
-          Ställ in dina regler, kopiera strängen, klistra in i spelets sökruta. Ingen Mewtwo ska dö i onödan.
+      <nav className="nav" aria-label="Huvudmeny">
+        <a href="#top" className="logo">
+          <span className="logo-mark" aria-hidden="true" />
+          Boxrensaren
+        </a>
+        <div className="nav-links">
+          <a href="#regler">Regler</a>
+          <a href="#sa-funkar-det">Så funkar det</a>
+        </div>
+        <a href={GITHUB_URL} className="pill-btn small" target="_blank" rel="noreferrer">
+          GitHub
+        </a>
+      </nav>
+
+      <header className="hero" id="top">
+        <h1 className="hero-title">Boxrensaren</h1>
+        <p className="hero-sub">
+          Ställ in dina regler, kopiera strängen, klistra in i spelets sökruta.
+          Ingen Mewtwo ska dö i onödan.
         </p>
+        <a href="#regler" className="pill-btn icon">
+          <span className="pill-icon"><ChevronRight /></span>
+          Bygg din sträng
+        </a>
       </header>
 
-      <main className="layout">
-        <section className="panel">
+      <main className="layout" id="regler">
+        <section className="card">
+          <h2 className="card-title">Regler</h2>
+          <p className="card-sub">Välj en profil eller bygg en egen. Strängen uppdateras direkt.</p>
+
           <ProfilePicker
             presets={PRESETS}
             ownProfiles={ownProfiles}
@@ -66,11 +91,11 @@ export default function App() {
           />
           <RuleForm profile={profile} onChange={setProfile} />
           <div className="actions">
-            <button type="button" className="btn primary" onClick={handleSave}>
+            <button type="button" className="pill-btn" onClick={handleSave}>
               {isPreset ? 'Spara som egen profil' : 'Spara profil'}
             </button>
             {!isPreset && profile.id && (
-              <button type="button" className="btn danger" onClick={handleDelete}>
+              <button type="button" className="pill-btn ghost" onClick={handleDelete}>
                 Ta bort
               </button>
             )}
@@ -78,8 +103,8 @@ export default function App() {
           </div>
         </section>
 
-        <section className="panel sticky">
-          <SearchOutput searchString={result.searchString} warnings={result.warnings} />
+        <section className="card glow sticky">
+          <SearchOutput profile={profile} searchString={result.searchString} warnings={result.warnings} />
         </section>
       </main>
 

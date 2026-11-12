@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ChevronRight, Check } from './Icons.jsx'
 
 async function copyText(text) {
   try {
@@ -16,7 +17,22 @@ async function copyText(text) {
   }
 }
 
-export default function SearchOutput({ searchString, warnings }) {
+// Räknar hur mycket profilen skyddar – visas som stora siffror i resultatrutan
+function countProtected(profile) {
+  const keywords = Object.values(profile?.exclude ?? {}).filter(Boolean).length
+  const tags = profile?.protectAllTags ? 1 : (profile?.protectedTags ?? []).length
+  return keywords + tags
+}
+
+// [0, 1, 2] blir "0–2★", [0, 2] blir "0, 2★" – kort nog för att få plats på mobilen
+function formatStars(stars) {
+  if (stars.length === 0) return '–'
+  const consecutive = stars.every((s, i) => i === 0 || s === stars[i - 1] + 1)
+  if (stars.length > 1 && consecutive) return `${stars[0]}–${stars.at(-1)}★`
+  return `${stars.join(', ')}★`
+}
+
+export default function SearchOutput({ profile, searchString, warnings }) {
   const [copied, setCopied] = useState(false)
 
   async function handleCopy() {
@@ -26,13 +42,29 @@ export default function SearchOutput({ searchString, warnings }) {
     setTimeout(() => setCopied(false), 2000)
   }
 
+  const stars = [...new Set(profile?.stars ?? [])].sort((a, b) => a - b)
+
   return (
     <div className="output">
-      <h2 className="label">Din söksträng</h2>
-      <code className="search-string">{searchString || '(tom – välj några regler)'}</code>
+      <div className="stats">
+        <div className="stat">
+          <span className="stat-value">{countProtected(profile)}</span>
+          <span className="stat-label">skydd aktiva</span>
+        </div>
+        <div className="stat">
+          <span className="stat-value">{formatStars(stars)}</span>
+          <span className="stat-label">får transfereras</span>
+        </div>
+      </div>
 
-      <button type="button" className="btn primary wide" onClick={handleCopy} disabled={!searchString}>
-        {copied ? 'Kopierad!' : 'Kopiera'}
+      <div className="result-box">
+        <span className="result-label">Din söksträng</span>
+        <code className="search-string">{searchString || '(tom – välj några regler)'}</code>
+      </div>
+
+      <button type="button" className="pill-btn icon wide" onClick={handleCopy} disabled={!searchString}>
+        <span className="pill-icon">{copied ? <Check /> : <ChevronRight />}</span>
+        {copied ? 'Kopierad!' : 'Kopiera strängen'}
       </button>
 
       {warnings.length > 0 && (
@@ -43,7 +75,7 @@ export default function SearchOutput({ searchString, warnings }) {
         </ul>
       )}
 
-      <details className="howto">
+      <details className="howto" id="sa-funkar-det">
         <summary>Så använder du den</summary>
         <ol>
           <li>Kopiera strängen.</li>
